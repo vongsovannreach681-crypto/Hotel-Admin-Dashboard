@@ -190,13 +190,13 @@ const Payments = () => {
                   <th className="px-4 py-3">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y poppins divide-slate-200 bg-white">
+              <tbody className="divide-y poppins divide-slate-200 p-5 bg-white">
                 {filteredPayments.length > 0 ? (
                   filteredPayments.map((payment) => (
                     <tr
                       key={payment._id}
                       onClick={() => handleRowClick(payment)}
-                      className="cursor-pointer text-sm text-center text-slate-700 hover:bg-slate-50"
+                      className="cursor-pointer text-sm text-center  text-slate-700 hover:bg-slate-50"
                     >
                       <td className="whitespace-nowrap px-4 py-4 font-medium text-slate-900">
                         {payment.payment_id ?? "-"}

@@ -112,7 +112,7 @@ const Dashboard = () => {
               key={item.label}
               type="button"
               onClick={() => navigate(item.route)}
-              className="group rounded-2xl border-l-4 border-[var(--bg-primary)] bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="group cursor-pointer rounded-2xl border-l-4 border-[var(--bg-primary)] bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
