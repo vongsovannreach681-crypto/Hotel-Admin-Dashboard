@@ -21,6 +21,7 @@ import Staff from './pages/Staff.jsx'
 import AddStaff from './pages/AddStaff.jsx'
 import StaffDetail from './pages/StaffDetail.jsx'
 import AddPayment from './pages/AddPayment.jsx'
+import PaymentDetail from './pages/PaymentDetail.jsx'
 // import AddPayments from './pages/AddPayments.jsx'
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path: '/payments/add',
     element: <App page={<AddPayment />} />,
+  },
+  {
+    path: '/payments/:id',
+    element: <App page={<PaymentDetail/>} />,
   },
   {
     path: '/users',

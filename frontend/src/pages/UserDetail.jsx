@@ -83,52 +83,70 @@ const UserDetail = () => {
         >
           <i className="fa-solid fa-arrow-left" />
         </button>
-        <h1 className="mt-1 text-3xl font-semibold text-slate-900">
-          User Detail
-        </h1>
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--bg-primary)]">
+            RomduL Admin
+          </p>
+          <h1 className="mt-1 text-3xl font-semibold poppins text-slate-900">
+            User Detail
+          </h1>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-8 md:flex-row md:items-start">
+      <div className="flex gap-10 items-start">
         <div className="shrink-0">
           {avatarUrl ? (
             <img
               src={avatarUrl}
               alt={user.userName || "User"}
-              className="h-[320px] w-[320px] rounded-md object-cover shadow-sm"
+              className="h-[420px] w-[420px] rounded-md object-cover shadow-sm"
             />
           ) : (
-            <div className="flex h-[320px] w-[320px] items-center justify-center rounded-md bg-slate-100 text-sm text-slate-400">
+            <div className="flex h-[420px] w-[420px] items-center justify-center rounded-md bg-slate-100 text-sm text-slate-400">
               No avatar
             </div>
           )}
         </div>
 
-        <div className="flex-1 space-y-4 text-slate-700">
-          <h2 className="text-3xl font-semibold text-[var(--bg-primary)]">
+        <div className="flex-1">
+          <h2 className="poppins text-3xl font-semibold text-[var(--bg-primary)]">
             {user.userName ?? "-"}
           </h2>
-          <p>User ID: {user.userId ?? "-"}</p>
-          <p>Email: {user.email ?? "-"}</p>
-          <p>Booking ID: {user.booking_id ?? "-"}</p>
-          <p>Status: {user.isActive ? "Active" : "Inactive"}</p>
-          <p>
+
+          <p className="poppins mt-4 text-xl font-medium text-gray-700">
+            User ID: {user.userId ?? "-"}
+          </p>
+
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
+            Email: {user.email ?? "-"}
+          </p>
+
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
+            Booking ID: {user.booking_id ?? "-"}
+          </p>
+
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
+            Status: {user.isActive ? "Active" : "Inactive"}
+          </p>
+
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Created:{" "}
             {user.createdAt ? new Date(user.createdAt).toLocaleString() : "-"}
           </p>
+
+          <button
+            type="button"
+            onClick={() =>
+              navigate("/users/add", {
+                state: { user: { ...user, _id: id } },
+              })
+            }
+            className="mt-6 rounded-md bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white poppins"
+          >
+            Edit User
+          </button>
         </div>
       </div>
-
-      <button
-        type="button"
-        onClick={() =>
-          navigate("/users/add", {
-            state: { user: { ...user, _id: id } },
-          })
-        }
-        className="mt-6 rounded-md bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white"
-      >
-        Edit User
-      </button>
     </section>
   );
 };

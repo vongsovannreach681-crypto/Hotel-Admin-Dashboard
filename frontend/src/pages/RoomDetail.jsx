@@ -37,9 +37,9 @@ const RoomDetail = () => {
     fetchRoom();
   }, [id, location.state?.room]);
 
-  const images = useMemo(() => {
-    const list = Array.isArray(room?.image) ? room.image : [];
-    return list.filter(Boolean);
+  const mainImage = useMemo(() => {
+    const list = Array.isArray(room?.image) ? room.image.filter(Boolean) : [];
+    return getImageUrl(list[0]);
   }, [room]);
 
   if (loading) {
@@ -74,8 +74,9 @@ const RoomDetail = () => {
 
   if (!room) return null;
 
-  const mainImage = getImageUrl(images[0]);
   const status = room.room_information?.status ? "Available" : "Occupied";
+  const hasLocation =
+    room.location?.street || room.location?.city || room.location?.country;
 
   return (
     <section className="rounded-md bg-white px-10 py-10 shadow">
@@ -89,7 +90,10 @@ const RoomDetail = () => {
         </button>
 
         <div>
-          <h1 className="mt-1 text-3xl font-semibold text-slate-900">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--bg-primary)]">
+            RomduL Admin
+          </p>
+          <h1 className="mt-1 text-3xl font-semibold poppins text-slate-900">
             Room Detail
           </h1>
         </div>
@@ -108,47 +112,34 @@ const RoomDetail = () => {
               No image
             </div>
           )}
-
-          {images.length > 1 ? (
-            <div className="mt-4 flex flex-wrap gap-3">
-              {images.slice(0, 4).map((image) => (
-                <img
-                  key={image}
-                  src={getImageUrl(image)}
-                  alt={room.room_type || "Room"}
-                  className="h-20 w-28 rounded-md object-cover shadow-sm"
-                />
-              ))}
-            </div>
-          ) : null}
         </div>
 
         <div className="flex-1">
-          <h2 className="text-3xl font-semibold text-[var(--bg-primary)]">
+          <h2 className="poppins text-3xl font-semibold text-[var(--bg-primary)]">
             {room.room_type || "-"}
           </h2>
 
-          <p className="mt-4 text-xl font-medium text-gray-700">
+          <p className="poppins mt-4 text-xl font-medium text-gray-700">
             Room ID: {room.room_id ?? "-"}
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Hotel: {room.hotel_name || room.hotel_id || "-"}
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Room Number: {room.room_number ?? "-"}
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Floor: {room.floor ?? "-"}
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Price per Night: {room.room_information?.price_per_night ?? "-"}
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Status: {status}{" "}
             <i
               className={`fa-solid fa-circle text-xs ${
@@ -159,29 +150,37 @@ const RoomDetail = () => {
             />
           </p>
 
-          <p className="mt-3 text-xl font-medium text-gray-700">
+          <p className="poppins mt-3 text-xl font-medium text-gray-700">
             Bed Type: {room.room_information?.bed_type ?? "-"}
           </p>
 
-          <p className="mt-5 text-md font-medium text-gray-700">
+          <p className="poppins mt-5 text-md font-medium text-gray-700">
             <i className="fa-solid fa-note-sticky" /> Description:
             <br />
             <span className="pl-10">{room.description ?? "-"}</span>
           </p>
 
-          <p className="mt-5 text-md font-medium text-gray-700">
-            <i className="fa-solid fa-location-dot" /> Hotel Location:
-            <br />
-            <span className="pl-10">
-              Street: {room.location?.street ?? "-"}
+          {hasLocation ? (
+            <p className="poppins mt-5 text-md font-medium text-gray-700">
+              <i className="fa-solid fa-location-dot" /> Hotel Location:
               <br />
-            </span>
-            <span className="pl-10">
-              City: {room.location?.city ?? "-"}
-              <br />
-            </span>
-            <span className="pl-10">Country: {room.location?.country ?? "-"}</span>
-          </p>
+              {room.location?.street ? (
+                <span className="pl-10">
+                  Street: {room.location.street}
+                  <br />
+                </span>
+              ) : null}
+              {room.location?.city ? (
+                <span className="pl-10">
+                  City: {room.location.city}
+                  <br />
+                </span>
+              ) : null}
+              {room.location?.country ? (
+                <span className="pl-10">Country: {room.location.country}</span>
+              ) : null}
+            </p>
+          ) : null}
 
           <button
             type="button"
@@ -195,7 +194,7 @@ const RoomDetail = () => {
                 },
               })
             }
-            className="mt-6 rounded-md bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white"
+            className="mt-6 rounded-md bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white poppins"
           >
             Edit Room
           </button>

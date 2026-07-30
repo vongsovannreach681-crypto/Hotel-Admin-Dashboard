@@ -32,6 +32,7 @@ const AddPayment = () => {
 
   const [form, setForm] = useState(() => getInitialForm(selectedPayment));
   const [bookings, setBookings] = useState([]);
+  const [users, setUsers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [loadingBookings, setLoadingBookings] = useState(true);
@@ -39,8 +40,12 @@ const AddPayment = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await api.get("/booking");
-        setBookings(Array.isArray(res.data) ? res.data : []);
+        const [bookingRes, userRes] = await Promise.all([
+          api.get("/booking"),
+          api.get("/users"),
+        ]);
+        setBookings(Array.isArray(bookingRes.data) ? bookingRes.data : []);
+        setUsers(Array.isArray(userRes.data) ? userRes.data : []);
       } catch (err) {
         setError(
           err?.response?.data?.message ||
@@ -54,6 +59,11 @@ const AddPayment = () => {
 
     fetchBookings();
   }, []);
+
+  const userMap = users.reduce((acc, user) => {
+    acc[user.userId] = user;
+    return acc;
+  }, {});
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -80,7 +90,7 @@ const AddPayment = () => {
       };
 
       if (isEditMode) {
-        await api.patch(`/payment/${selectedPayment._id}`, payload);
+        await api.put(`/payment/${selectedPayment._id}`, payload);
       } else {
         await api.post("/payment", payload);
       }
@@ -103,7 +113,7 @@ const AddPayment = () => {
         <button
           type="button"
           onClick={() => navigate("/payments")}
-          className="rounded-md border border-slate-200 bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white transition"
+          className="rounded-md border Poppins border-slate-200 bg-[var(--bg-primary)] px-4 py-2 text-sm font-semibold text-white transition"
         >
           <i className="fa-solid fa-arrow-left"></i>
           Back to Payments
@@ -148,7 +158,12 @@ const AddPayment = () => {
               </option>
               {bookings.map((booking) => (
                 <option key={booking._id} value={booking.booking_id}>
-                  Booking #{booking.booking_id}
+                  {(() => {
+                    const userName =
+                      userMap[booking.user_id]?.userName ||
+                      `User #${booking.user_id}`;
+                    return `Booking #${booking.booking_id} - ${userName}`;
+                  })()}
                 </option>
               ))}
             </select>
