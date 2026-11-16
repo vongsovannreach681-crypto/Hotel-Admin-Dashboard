@@ -28,6 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // 3. API Routes
+app.get("/", (req, res) => {
+  res.json({ status: "success", message: "Hotel Management API is running" });
+});
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/hotel", require("./routes/hotelRoute"));
 app.use("/api/rooms", require("./routes/roomsRoute"));
@@ -37,6 +40,6 @@ app.use("/api/payment", require("./routes/paymentRoute"));
 
 // 4. Start Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });

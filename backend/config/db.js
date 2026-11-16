@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const connectDB = async () => {
+  if (!process.env.MONGO_URI) {
+    console.error("MongoDB connection error: MONGO_URI is not defined in environment variables.");
+    return;
+  }
+
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
 
@@ -11,8 +16,7 @@ const connectDB = async () => {
 
     // Existing collections
     const existingCollections = (await db.listCollections().toArray()).map(
-      (c) => c.name,
-      
+      (c) => c.name
     );
 
     const requiredCollections = ["users", "hotels", "rooms", "staff", "bookings", "payments"];
@@ -24,8 +28,7 @@ const connectDB = async () => {
       }
     }
   } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1);
+    console.error(`MongoDB connection error: ${error.message}`);
   }
 };
 
