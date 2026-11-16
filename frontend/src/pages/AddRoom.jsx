@@ -164,19 +164,7 @@ const AddRoom = () => {
             </select>
           </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-semibold text-green-900 poppins">
-              Booking ID
-            </span>
-            <input
-              type="number"
-              name="booking_id"
-              value={form.booking_id}
-              onChange={handleChange}
-              className="w-full poopins rounded-md border border-slate-200 px-4 py-3 text-sm outline-none transition focus:border-[var(--bg-primary)]"
-              placeholder="Optional booking reference"
-            />
-          </label>
+          
 
           <label className="space-y-2">
             <span className="text-sm font-semibold text-green-900 poppins">
