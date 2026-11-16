@@ -1,33 +1,27 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 
 const app = express();
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  res.setHeader('Access-Control-Allow-Origin', origin || '*');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+// 1. CORS Middleware
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
-
-// 1. Connect to Database
+// 2. Connect to Database
 connectDB();
 
-// 2. Body Parser Middleware
+// 3. Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// 3. API Routes
+// 4. API Routes
 app.get("/", (req, res) => {
   res.json({ status: "success", message: "Hotel Management API is running" });
 });
@@ -38,7 +32,7 @@ app.use("/api/staff", require("./routes/staffsRoute"));
 app.use("/api/booking", require("./routes/bookingRoute"));
 app.use("/api/payment", require("./routes/paymentRoute"));
 
-// 4. Start Server
+// 5. Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
